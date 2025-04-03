@@ -40,3 +40,36 @@
 .read-the-docs {
   color: #888;
 }
+
+.navbar {
+  background-color: #333; /* Dark background */
+  position: fixed; /* Fix the navbar at the top */
+  top: 0; /* Align to the top */
+  width: 100%; /* Full width */
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+.nav-container {
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center items horizontally */
+  padding: 10px 0; /* Add padding for the navbar */
+}
+
+.nav-link {
+  display: block; /* Make links fill the container */
+  color: white; /* White text color */
+  text-align: center; /* Center text */
+  padding: 14px 16px; /* Padding for links */
+  text-decoration: none; /* Remove underline */
+}
+
+.nav-link:hover {
+    background-color: #ddd; /* Light background on hover */
+    color: black; /* Change text color on hover */
+}
+
+/* Additional styles to prevent content from being hidden behind the navbar */
+body {
+    padding-top: 60px; /* Adjust based on navbar height */
+    margin: 0; /* Remove default margin */
+}
