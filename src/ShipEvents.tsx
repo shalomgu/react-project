@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import TextField from "@mui/material/TextField";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+} from "@mui/material";
 import { ShipEvent } from "./ShipEvent";
-
 
 function ShipEventsPage() {
   const [events, setEvents] = useState<ShipEvent[]>([]);
@@ -23,13 +28,10 @@ function ShipEventsPage() {
   const fetchEvents = async () => {
     try {
       const params: any = {};
-      if (shipId) 
-        params.shipId = shipId;
-
+      if (shipId) params.shipId = shipId;
       if (eventType) params.eventType = eventType;
 
       const response = await axios.get("http://localhost:8080/api/events", { params });
-      console.log("Fetched data:", response.data);
       setEvents(response.data);
     } catch (error) {
       console.error("Failed to fetch events", error);
@@ -37,65 +39,88 @@ function ShipEventsPage() {
   };
 
   return (
-    <div style={{ padding: 16 }}>
-    <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
-      <TextField
-        label="Filter by Ship ID"
-        variant="outlined"
-        value={shipId}
-        onChange={(e) => setShipId(e.target.value)}
-        InputProps={{
-          style: {
-            color: "black",
-            backgroundColor: "white",
-          },
-        }}
-        InputLabelProps={{
-          style: { color: "black" },
-        }}
-      />
-      <TextField
-        label="Filter by Event Type"
-        variant="outlined"
-        value={eventType}
-        onChange={(e) => setEventType(e.target.value)}
-        InputProps={{
-          style: {
-            color: "black",         // text color
-            backgroundColor: "white", // input background
-          },
-        }}
-        InputLabelProps={{
-          style: { color: "black" },  // label color
-        }}
-      />
-    </div>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Event Type</TableCell>
-            <TableCell>Timestamp</TableCell>
-            <TableCell>Additional Data</TableCell>
-            <TableCell>Ship ID</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {events.map((event) => (
-            <TableRow key={event.id}>
-              <TableCell>{event.id}</TableCell>
-              <TableCell>{event.eventType}</TableCell>
-              <TableCell>{new Date(event.timestamp).toLocaleString()}</TableCell>
-              <TableCell>{event.additionalData}</TableCell>
-              <TableCell>{event.shipId}</TableCell>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        backgroundColor: "#1e1e1e",
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 4,
+      }}
+    >
+      <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
+        Ship Events Dashboard
+      </Typography>
+
+      <Card sx={{ width: "80%", mb: 4, p: 2, backgroundColor: "#2c2c2c" }}>
+        <CardContent>
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+            <TextField
+              label="Filter by Ship ID"
+              variant="filled"
+              value={shipId}
+              onChange={(e) => setShipId(e.target.value)}
+              fullWidth
+              InputProps={{
+                style: {
+                  color: "white",
+                  backgroundColor: "#424242",
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#bbb" },
+              }}
+            />
+            <TextField
+              label="Filter by Event Type"
+              variant="filled"
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value)}
+              fullWidth
+              InputProps={{
+                style: {
+                  color: "white",
+                  backgroundColor: "#424242",
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#bbb" },
+              }}
+            />
+          </Box>
+        </CardContent>
+      </Card>
+
+      <TableContainer component={Paper} sx={{ width: "80%", backgroundColor: "#2c2c2c" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ color: "#ccc" }}>ID</TableCell>
+              <TableCell sx={{ color: "#ccc" }}>Event Type</TableCell>
+              <TableCell sx={{ color: "#ccc" }}>Timestamp</TableCell>
+              <TableCell sx={{ color: "#ccc" }}>Additional Data</TableCell>
+              <TableCell sx={{ color: "#ccc" }}>Ship ID</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>
-);
-};
+          </TableHead>
+          <TableBody>
+            {events.map((event) => (
+              <TableRow key={event.id} hover>
+                <TableCell sx={{ color: "#eee" }}>{event.id}</TableCell>
+                <TableCell sx={{ color: "#eee" }}>{event.eventType}</TableCell>
+                <TableCell sx={{ color: "#eee" }}>
+                  {new Date(event.timestamp).toLocaleString()}
+                </TableCell>
+                <TableCell sx={{ color: "#eee" }}>{event.additionalData}</TableCell>
+                <TableCell sx={{ color: "#eee" }}>{event.shipId}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+}
 
 export default ShipEventsPage;
